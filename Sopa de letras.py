@@ -4,13 +4,14 @@ import random
 import string
 
 """
-    Demo application to show how to draw rectangles and letters on a Graph Element
-    This demo mocks up a crossword puzzle board
-    It will place a letter where you click on the puzzle
+
+    Genera la sopa de letras y se asegura de que sea jugable
+
 """
 
 
 BOX_SIZE = 25
+
 
 layout = [
             [sg.Text('Crossword Puzzle Using PySimpleGUI'), sg.Text('', key='_OUTPUT_')],
@@ -24,6 +25,9 @@ g = window.FindElement('_GRAPH_')
 
 letras=[[j for j in range(16)]for i in range(16)]
 colores=[[j for j in range(16)]for i in range(16)]
+
+	
+
 for row in range(16):
     for col in range(16):
             g.DrawRectangle((col * BOX_SIZE + 5, row * BOX_SIZE + 3), (col * BOX_SIZE + BOX_SIZE + 5, row * BOX_SIZE + BOX_SIZE + 3), line_color='black')
@@ -33,7 +37,11 @@ for row in range(16):
             letras[row][col]=letra ## se llena segun la orientacion 
             colores[row][col]=""   ## se llena segun la orientacion
 
-            
+if orientacion =="vertical":
+	for palabra in palabras_validas:
+		insertar_palabra_vertical(palabra,letras,g)
+else: insertar_palabra_horizontal(palabra,letras,g)
+           
 while True:             # Event Loop
     event, values = window.Read()
     print(event,"event")
@@ -54,11 +62,11 @@ while True:             # Event Loop
         #print(box_x, box_y)
         if (colores[box_y][box_x]=="spring green"):
             g.DrawRectangle(top_left=arriba_izq,bottom_right=abajo_derecha, line_color='black',fill_color="grey")
-            g.DrawText('{}'.format(letras[box_y][box_x]), letter_location, font='Courier 25')
+            g.DrawText('{}'.format(letras[box_y][box_x]), letter_location, font='Courier 25') # aca tambien se modifica la font
             colores[box_y][box_x]="grey"
         else:
-            g.DrawRectangle(top_left=arriba_izq,bottom_right=abajo_derecha, line_color='black',fill_color="spring green")
-            g.DrawText('{}'.format(letras[box_y][box_x]), letter_location, font='Courier 25')
+            g.DrawRectangle(top_left=arriba_izq,bottom_right=abajo_derecha, line_color='black',fill_color="spring green")#aca se cmbia el color segun los 3 colores
+            g.DrawText('{}'.format(letras[box_y][box_x]), letter_location, font='Courier 25')  					#la font tambien es una variable y se modifica  
             colores[box_y][box_x]="spring green"
 
 		
