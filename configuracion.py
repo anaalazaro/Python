@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 import funciones_CONFIG as fc
 import Wik_y_pattern as wp
+#import funciones_AYUDA as fa
 
 def Config():
     ''' Esta función abre la ventana general de configuración y en cada pestaña permite configurar cada característica
@@ -39,7 +40,8 @@ def Config():
 
     #Layout de la Tab para configurar el tipo de ayuda a utilizar:
     ayuda_layout = [
-			[sg.T('Aquí se mostrará el módulo de configuración de Ayuda')]
+			[sg.Radio('Sin ayuda', "RADIO1", default=True, size=(10,1), key='sin_ayuda'), sg.Radio('Mostrar definiciones', "RADIO1", key='con_definiciones'), 
+			 sg.Radio('Mostrar palabras', "RADIO1", key='con_palabras'), sg.Radio('Mostrar definiciones y palabras', "RADIO1", key='con_ayuda')]
          ]
 
     #Layout del Frame para configurar las palabras a hallar:
@@ -70,7 +72,7 @@ def Config():
           [sg.Frame('Orientación', contenido_orientacion_layout, font='Any 8', title_color='cadet blue')]      
          ]
 
-    #Layout de la ventana de confugración:
+    #Layout de la ventana de configuración:
     layout = [[sg.TabGroup([[sg.Tab('Colores', colores_layout), sg.Tab('Tipografía', tipografia_layout), 
            sg.Tab('Ayuda', ayuda_layout), sg.Tab('Contenido', contenido_layout)]])],
            [sg.Submit('Aplicar', tooltip='Al presionar este botón todos los cambios serán guardados')]
@@ -79,12 +81,12 @@ def Config():
     window = sg.Window('Configuración', layout, default_element_size=(24,1)).Finalize()
 
     #Establezco valores por defecto en caso de que el usuario no establezca sus propios valores:
-    colours = {'Sustantivo': 'sea green', 'Adjetivo': 'sky blue', 'Verbo': 'coral'}
+    colours = {'Sustantivo': 'spring green', 'Adjetivo': 'sky blue', 'Verbo': 'coral'}
     tipografia = {'font': 'Helvetica', 'caps': 'mayuscula'}
     cant_palabras = {'cant_Sust': '0', 'cant_Adjt': '0', 'cant_Verb': '0'}
     lista_palabras = []
     diccionario_palabras = {}
-    ayuda = False
+    ayuda = {'sin_ayuda':True, 'definiciones':False, 'palabras':False, 'con_ayuda':False}
     datos_configurados = {'colores':colours, 'tipografia': tipografia, 'cant_palabras': cant_palabras, 'palabras': lista_palabras, 'diccionario': diccionario_palabras, 'orientacion': 'horizontal'}
 
     while True:
@@ -129,6 +131,8 @@ def Config():
             cant_palabras['cant_Adjt'] = values['cant_A']
             cant_palabras['cant_Verb'] = values['cant_V']
             #Aquí guardaría la configuración de Ayuda, pero no dispongo del respectivo módulo:
+            ayuda = {'sin_ayuda': values['sin_ayuda'], 'definiciones': values['con_definiciones'], 'palabras': values['con_palabras'], 'con_ayuda': values['con_ayuda']}
+            print(ayuda)
             #Guardo la orientación de las palabras en la sopa de letras:
             if values['vertical']:
                 orientacion = 'vertical'
@@ -136,6 +140,7 @@ def Config():
                 orientacion = 'horizontal'
             #Finalmente, guardo todo lo anterior en un solo diccionario y lo retorno:
             datos_configurados = {'colores':colours, 'tipografia': tipografia, 'cant_palabras': cant_palabras, 'palabras': lista_palabras, 'diccionario': diccionario_palabras, 'orientacion': orientacion, 'ayuda': ayuda}
-            break
-    window.Close()           
+            break     
+    window.Close()
+                
     return datos_configurados
