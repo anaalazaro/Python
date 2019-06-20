@@ -136,5 +136,6 @@ def Config():
                 orientacion = 'horizontal'
             #Finalmente, guardo todo lo anterior en un solo diccionario y lo retorno:
             datos_configurados = {'colores':colours, 'tipografia': tipografia, 'cant_palabras': cant_palabras, 'palabras': lista_palabras, 'diccionario': diccionario_palabras, 'orientacion': orientacion, 'ayuda': ayuda}
-                
+            break
+    window.Close()           
     return datos_configurados
