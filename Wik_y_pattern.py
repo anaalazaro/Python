@@ -4,7 +4,7 @@ from pattern.web import Wiktionary
 
 def de_pattern(teclado):
 	palabra_tipo=tag(teclado,tokenize=True, encoding="utf-8")
-	print(palabra_tipo)
+	#print(palabra_tipo)
 	if palabra_tipo[0][1]=="NN":
 		palabra_tipo=[teclado,"Sustantivo"]
 	elif palabra_tipo[0][1]=="VB":
@@ -13,14 +13,13 @@ def de_pattern(teclado):
 		palabra_tipo=[teclado,"Adjetivo"]
 	else:
 		palabra_tipo=[teclado,"error"] #preguntar por esto	
-		print(palabra_tipo)
+		#print(palabra_tipo)
 	return palabra_tipo
 
 
-def validacion(teclado,diccionario,lista_de_palabras):
+def validacion(teclado, diccionario):
 	""" Esta funcion debe ser llamada dentro de un loop para ingresar todas las palabras. Puntualmente
-	la funcion valida 1 palabra ingresada y la agrega a una lista de palabras validas y un diccionario 
-	de palabras validas """
+	la funcion valida 1a palabra ingresada y la agrega a un diccionario de palabras validas """
 	web = Wiktionary(language="es")
 	articulo = web.search(teclado)#PALABRA
 	if articulo is None:
@@ -61,14 +60,14 @@ def validacion(teclado,diccionario,lista_de_palabras):
 
 #lo de arriba no esta implementado ya que por un error de pattern, clasifica a todas las palabras como NN es decir, sustantivos
 
-	lista_de_palabras.append(teclado)
+	#lista_de_palabras.append(teclado)
 	indice_diccionario=teclado
 	indice_diccionario={"Definición":definicion,"Tipo":clasificacion}
 	diccionario.update(indice_diccionario)
 	if validado:
-		lo_que_devuelve={"lista":lista_de_palabras,"diccionario":diccionario,"validez":True} #si se ingreso correctamente, se modifica la lista y diccionario
+		lo_que_devuelve={"diccionario":diccionario,"validez":True} #si se ingreso correctamente, se modifica la lista y diccionario
 	else:
-		lo_que_devuelve={"lista":lista_de_palabras,"diccionario":diccionario,"validez":False} #si no se ingresó, solo "sirve" la validez
+		lo_que_devuelve={"diccionario":diccionario,"validez":False} #si no se ingresó, solo "sirve" la validez
 	return lo_que_devuelve
 #print(diccionario)
 
