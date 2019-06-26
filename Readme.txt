@@ -1,0 +1,8 @@
+Observaciones:
+Botones de color: al asignar el parámetro de los colores seleccionados desde la configuración en los botones, tira errores con el __init__ de una de las librerías, por eso es que no tienen color asignado y se ven como son por defecto en la interfaz, imposibilitando la visualización de dichos colores seleccionados durante la configuración y posteriormente en la resolución de la sopa de letras.
+No se llego a terminar la comparación de palabras con pattern porque clasificaba toda palabra ingresada como sustantivo.
+Los archivos ayuda.py y Sopadeletras.py son archivos viejos que olvidamos borrar, no se incluyen en la entrega.
+Bugs conocidos:
+Eliminación de palabras: en la interfaz, al momento de agregar una palabra, si la misma es válida quedará verificada y agregada al programa, luego de esto se verá impresa en la ventana que está debajo del espacio para agregar dicha palabra. Cuando se seleccione dicha palabra y se presione el botón "Eliminar", este no hará nada debido a una incompatibilidad entre módulos que debemos reparar.
+Módulo de ayuda: no es compatible con el resto del programa. Hay que corregir los parámetros que recibe el mismo, para luego poder operar correctamente con ellos.
+Corrección de palabras: no implementada en su totalidad. La parte que está implementada no funciona, ya que tira un error de "index out of range" al querer utilizarla, por lo que el botón "Corregir" rompe el programa, de momento.
