@@ -1,4 +1,3 @@
-from wiktionaryparser import WiktionaryParser
 from pattern.es import parse,tag,singularize,pluralize
 from pattern.web import Wiktionary
 
@@ -50,19 +49,9 @@ def validacion(teclado, diccionario):
 	if cambio:
 		pluralize(teclado)
 								 
-
-#if articulo is None:           #pregunto si no se encontro en wik
-#	palabra_pattern=de_pattern(teclado)
-#	indice_diccionario=palabra_pattern[0]
-#	indice_diccionario={"Definición":definicion,"Tipo":palabra_pattern[1]}
-#	diccionario.update(indice_diccionario)
-#   lista_de_palabras.append(palabra_pattern[0])
-
-#lo de arriba no esta implementado ya que por un error de pattern, clasifica a todas las palabras como NN es decir, sustantivos
-
 	#lista_de_palabras.append(teclado)
 	indice_diccionario=teclado
-	indice_diccionario={"Definición":definicion,"Tipo":clasificacion}
+	indice_diccionario={"Palabra":teclado,"Definición":definicion,"Tipo":clasificacion}
 	diccionario.update(indice_diccionario)
 	if validado:
 		lo_que_devuelve={"diccionario":diccionario,"validez":True} #si se ingreso correctamente, se modifica la lista y diccionario
@@ -71,18 +60,16 @@ def validacion(teclado, diccionario):
 	return lo_que_devuelve
 #print(diccionario)
 
+def comparando(pattern,wik):
+	if pattern[1]!=wik[1]:
+		#reporte 1 pattern y wik no coinciden
+		aux= "No Coinciden"
+		return aux
 
 
 
-
-
-
-
-
-#unificar los tipos dados por pattern y los tipos dados por wik y comparar
-#de ahi salen los reportes
 #
-#guardar las palabras validad en una dicc
-#hacer que sean por teclado
+#   para la implementacion hay que llamar a las funciones
+#	de pattern y validacion, despues comparar con comparando
+#	y finalmente realizar los reportes que faltan
 #
-#exepciones
