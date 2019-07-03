@@ -26,7 +26,7 @@ def mostrar_defi(diccinario):
         defi=defi+ '\n' + j['Definición']
         
            
-    layout=[[sg.T('Definiciones de las palabras a encontrar:  '+ str(defeturi))],
+    layout=[[sg.T('Definiciones de las palabras a encontrar:  '+ str(defi))],
        ]
     return layout
     
