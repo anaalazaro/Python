@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
 import funciones_CONFIG as fc
 import Wik_y_pattern as wp
-#import funciones_AYUDA as fa
+import funciones_AYUDA as fa
 
 def Config():
     ''' Esta función abre la ventana general de configuración y en cada pestaña permite configurar cada característica
@@ -40,7 +40,7 @@ def Config():
 
     #Layout de la Tab para configurar el tipo de ayuda a utilizar:
     ayuda_layout = [
-			[sg.Radio('Sin ayuda', "RADIO1", default=True, size=(10,1), key='sin_ayuda'), sg.Radio('Mostrar definiciones', "RADIO1", key='con_definiciones'), 
+			[sg.Radio('Sin ayuda', "RADIO1", size=(10,1), key='sin_ayuda'), sg.Radio('Mostrar definiciones', "RADIO1", key='con_definiciones'), 
 			 sg.Radio('Mostrar palabras', "RADIO1", key='con_palabras'), sg.Radio('Mostrar definiciones y palabras', "RADIO1", key='con_ayuda')]
          ]
 
@@ -109,7 +109,6 @@ def Config():
                 if validada:
                     lista_palabras.append(values['in'])
                     contenido_palabras_layout[1][0].Update(values=lista_palabras)
-
         #Al seleccionar una palabra del listbox y presionar 'Eliminar' debería borrarse pero dejó de funcionar al importar el modulo wik_y_pattern.
 
         #if event is 'Eliminar' and values['palabra_seleccionada'] in lista_palabras:
@@ -130,8 +129,10 @@ def Config():
             cant_palabras['cant_Sust'] = values['cant_S']
             cant_palabras['cant_Adjt'] = values['cant_A']
             cant_palabras['cant_Verb'] = values['cant_V']
-            #Aquí guardaría la configuración de Ayuda, pero no dispongo del respectivo módulo:
+            #Aquí guarda la configuración de Ayuda:
+            
             ayuda = {'sin_ayuda': values['sin_ayuda'], 'definiciones': values['con_definiciones'], 'palabras': values['con_palabras'], 'con_ayuda': values['con_ayuda']}
+            
             print(ayuda)
             #Guardo la orientación de las palabras en la sopa de letras:
             if values['vertical']:
@@ -140,6 +141,7 @@ def Config():
                 orientacion = 'horizontal'
             #Finalmente, guardo todo lo anterior en un solo diccionario y lo retorno:
             datos_configurados = {'colores':colours, 'tipografia': tipografia, 'cant_palabras': cant_palabras, 'palabras': lista_palabras, 'diccionario': diccionario_palabras, 'orientacion': orientacion, 'ayuda': ayuda}
+            print(datos_configurados)
             break     
     window.Close()
                 
