@@ -23,9 +23,16 @@ columnas_validas = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
 BOX_SIZE = 25
 
-#Acá se obtendría el layout del Frame de ayuda pero las funciones resultan incompatibles con el resto del código
-#y decidí dejarlo vació por el momento:
-ayuda_layout = [[sg.Text('Aquí iría la ayuda seleccionada previamente.')]]
+if datos_configurados['ayuda']['sin_ayuda']:
+    ayuda_layout=fa.sin_ayuda(datos_configurados['diccionario'])
+elif datos_configurados['ayuda']['definiciones']:
+    ayuda_layout=fa.mostrar_defi(datos_configurados['diccionario'])
+elif datos_configurados['ayuda']['palabras']:
+    ayuda_layout=fa.mostrar_pal(datos_configurados['diccionario'])
+else:
+    ayuda_layout=fa.mostrar_defi_pal(datos_configurados['diccionario'])
+
+#ayuda_layout_general = [sg.Frame('Ayuda', ayuda_layout, font='Any 10', title_color='cadet blue')]
 
 #if ayuda['sin_ayuda']:
 #    ayuda_layout = fa.sin_ayuda(datos_configurados['palabras'])
