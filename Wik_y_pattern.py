@@ -50,14 +50,14 @@ def validacion(teclado, diccionario):
 		pluralize(teclado)
 								 
 	#lista_de_palabras.append(teclado)
-	indice_diccionario=teclado
-	indice_diccionario={"Palabra":teclado,"Definición":definicion,"Tipo":clasificacion}
-	diccionario.update(indice_diccionario)
+	indice=teclado
+	diccionario[indice]={"Definición":definicion,"Tipo":clasificacion}#diccionario con la palabra , su deficinicion y su tipo.
+	#diccionario.update(indice)
 	if validado:
-		lo_que_devuelve={"diccionario":diccionario,"validez":True} #si se ingreso correctamente, se modifica la lista y diccionario
+		datos={"info_palabra":diccionario,"validez":True} #si se ingreso correctamente, se modifica la lista y diccionario
 	else:
-		lo_que_devuelve={"diccionario":diccionario,"validez":False} #si no se ingresó, solo "sirve" la validez
-	return lo_que_devuelve
+		datos={"info_palabra":diccionario,"validez":False} #si no se ingresó, solo "sirve" la validez
+	return datos
 #print(diccionario)
 
 def comparando(pattern,wik):
