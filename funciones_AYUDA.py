@@ -16,11 +16,10 @@ def sin_ayuda(diccionario):
 	        [sg.T('Cantidad de adjetivos: '+ str(cantAdjetivos)) ],
 	        [sg.T('Cantidad de Verbos:  '+ str(cantVerbos))],
 	        [sg.T('Cantidad de Susutantivos: '+ str(cantSustantivos))],
-	        [sg.Button('Ok')]
 	]
     return layout
 
-def mostrar_defi(diccinario):
+def mostrar_defi(diccionario):
     defi=""
     for i,j in diccionario.items():
         defi=defi+ '\n' + j['Definición']
