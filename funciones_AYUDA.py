@@ -1,41 +1,52 @@
 import sys
 import PySimpleGUI as sg
 	
-def sin_ayuda(palabras):
-    cantAdjetivos=len(palabras['cantAdjetivos'])
-    cantVerbos= len(palabras['cantVerbos'])
-    cantSustantivos=len(palabras['cantSustantivos'])
-	
+def sin_ayuda(diccionario):
+    cantSustantivos=0
+    cantVerbos=0
+    cantAdjetivos=0
+    for k,v in diccionario.items():
+        if v['Tipo']=='Sustantivo':
+            cantSustantivos+=1
+        if v['Tipo']=='Adjetivo':
+            cantAdjetivos+=1
+        if v['Tipo']=='Verbo':
+            cantVerbos+=1
     layout=[[sg.Text('Cantidad de palabras a encontrar: ')],
 	        [sg.T('Cantidad de adjetivos: '+ str(cantAdjetivos)) ],
 	        [sg.T('Cantidad de Verbos:  '+ str(cantVerbos))],
 	        [sg.T('Cantidad de Susutantivos: '+ str(cantSustantivos))],
-	        [sg.Button('Ok')]]
-
+	        [sg.Button('Ok')]
+	]
     return layout
 
-def mostrar_defi(palabras):
-    dic={}
-    for i in palabras.values():
-	    for e in i:
-             defi= input('Ingrese una definicion para '+ e+': ')
-             dic[e]=defi	
+def mostrar_defi(diccinario):
     defi=""
-    for d in dic.values():
-        defi=defi+'\n'+d
+    for i,j in diccionario.items():
+        defi=defi+ '\n' + j['Definición']
+        
            
-    layout=[[sg.T('Definiciones de las palabras a encontrar:  '+ str(defi))]
+    layout=[[sg.T('Definiciones de las palabras a encontrar:  '+ str(defeturi))],
        ]
     return layout
+    
      
-	
-def mostrar_pal(palabras):
+def mostrar_pal(diccionario):
     pal=""
-    for i in palabras.values():
-       p= ','.join(i)
-       pal=pal+','+p
+    for i,j in diccionario.items():
+       pal=pal+'\n'+i
         
            
     layout=[[sg.T('Palabras a encontrar:  '+ str(pal))],
+       ]
+    return layout
+
+def mostrar_defi_pal(diccionario):
+    ayuda=""
+    for i,j in diccionario.items():
+        ayuda= ayuda + '\n'+ i +':'+j['Definición']
+    print(ayuda)
+    
+    layout=[[sg.T('Palabras a encontrar:  '+ str(ayuda))],
        ]
     return layout
