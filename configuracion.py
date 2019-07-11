@@ -40,8 +40,8 @@ def Config():
 
     #Layout de la Tab para configurar el tipo de ayuda a utilizar:
     ayuda_layout = [
-			[sg.Radio('Sin ayuda', "RADIO1", size=(10,1), key='sin_ayuda'), sg.Radio('Mostrar definiciones', "RADIO1", key='con_definiciones'), 
-			 sg.Radio('Mostrar palabras', "RADIO1", key='con_palabras'), sg.Radio('Mostrar definiciones y palabras', "RADIO1", key='con_ayuda')]
+			[sg.Radio('Sin ayuda', "RADIO2", size=(10,1), key='sin_ayuda', default=True), sg.Radio('Mostrar definiciones', "RADIO2", key='con_definiciones'), 
+			 sg.Radio('Mostrar palabras', "RADIO2", key='con_palabras'), sg.Radio('Mostrar definiciones y palabras', "RADIO2", key='con_ayuda')]
          ]
 
     #Layout del Frame para configurar las palabras a hallar:
@@ -61,8 +61,8 @@ def Config():
     #Layout del Frame para configurar la orientación de las palabras a hallar:
     contenido_orientacion_layout = [
 				[sg.Text('Seleccione cómo se mostrarán las letras:')],
-				[sg.Radio('Horizontal', "RADIO1", default=True, key='horizontal'),
-				sg.Radio('Vertical', "RADIO1", key='vertical')]
+				[sg.Radio('Horizontal', "RADIO3", default=True, key='horizontal'),
+				sg.Radio('Vertical', "RADIO3", key='vertical')]
 		 ]
 
     #Layout de la Tab para configurar el contenido de la sopa de letras:
