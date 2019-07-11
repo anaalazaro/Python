@@ -41,7 +41,7 @@ def mostrar_pal(diccionario):
 def mostrar_defi_pal(diccionario):
     ayuda=""
     for i,j in diccionario.items():
-        ayuda= ayuda + '\n'+ i +':'+j['Definición']
+        ayuda= ayuda + '\n'+ i +':   '+j['Definición']
     print(ayuda)
     
     layout=[[sg.Multiline('Palabras a encontrar:  '+ str(ayuda), disabled=True)],
