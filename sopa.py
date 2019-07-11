@@ -45,7 +45,7 @@ else:
 
 #Intenté darle un valor al color del botón pero hay un problema con las librerías, por lo que lo dejé con el color por default
 botones_color_layout = [
-                  [sg.DummyButton("Sustantivos", key='color_Sustantivo')], [sg.DummyButton("Adjetivos", key='color_Adjetivo')], [sg.DummyButton("Verbos", key='color_Verbo')]
+                  [sg.Button("Sustantivos")], [sg.Button("Adjetivos")], [sg.Button("Verbos")]
                ]
 
 layout = [
@@ -74,17 +74,17 @@ for row in range(16):
                 letra = '{}'.format(random.choice(string.ascii_lowercase))
             g.DrawText(letra,location , font=datos_configurados['tipografia']['font'])
             letras[row][col]=letra ## se llena segun la orientacion
-            colores[row][col]=""   ## se llena segun la orientacion
+            colores[row][col]="grey"   ## se llena segun la orientacion
 
 if datos_configurados['orientacion'] =="vertical":
     for palabra in datos_configurados['palabras']:
-        columnas_validas=fs.insertar_palabra_vertical(BOX_SIZE,palabra,letras,g,columnas_validas,datos_configurados['tipografia']['font'])
+        columnas_validas=fs.insertar_palabra_vertical(BOX_SIZE,palabra,letras,g,columnas_validas,datos_configurados['tipografia']['font'],colores)
 else:
     for palabra in datos_configurados['palabras']:
-        filas_validas=fs.insertar_palabra_horizontal(BOX_SIZE,palabra,letras,g,filas_validas,datos_configurados['tipografia']['font'])
+        filas_validas=fs.insertar_palabra_horizontal(BOX_SIZE,palabra,letras,g,filas_validas,datos_configurados['tipografia']['font'],colores)
 		
-color_seleccionado = 'grey'
-           
+color_actual = 'spring green'   #valor por defecto
+     
 while True:             # Event Loop
     event, values = window.Read()
     print(event,"event")
@@ -94,15 +94,13 @@ while True:             # Event Loop
         break
     mouse = values['_GRAPH_']
     
-#A continuación se asignaría el color que se utilizará al pintar las letras, en relación al botón que se presione,
-#pero hay problemas con las librerías:
-
-#    if event == 'Sustantivos':
-#        color_seleccionado=color_S
-#    if event == 'Adjetivos':
-#        color_seleccionado=color_A
-#    if event == 'Verbos':
-#        color_seleccionado=color_V
+    if event is ("Sustantivos"):
+        color_actual=datos_configurados["colores"]["Sustantivo"]
+        print("entro")
+    if event is "Adjetivos":
+        color_actual=datos_configurados["colores"]["Adjetivo"]
+    if event is "Verbos":
+        color_actual=datos_configurados["colores"]["Verbo"]   
     if event == '_GRAPH_':
         if mouse == (None, None):
             continue
@@ -112,31 +110,34 @@ while True:             # Event Loop
         abajo_derecha=(box_x * BOX_SIZE +30, box_y * BOX_SIZE +28)
         letter_location = (box_x * BOX_SIZE + 18, box_y * BOX_SIZE + 17)
         #print(box_x, box_y)
-        if (colores[box_y][box_x]=="spring green"):
-            g.DrawRectangle(top_left=arriba_izq,bottom_right=abajo_derecha, line_color='black',fill_color="grey")
+        if (colores[box_y][box_x]==color_actual):
+            g.DrawRectangle(top_left=arriba_izq,bottom_right=abajo_derecha, line_color='black', fill_color="grey")
             g.DrawText('{}'.format(letras[box_y][box_x]), letter_location, font=datos_configurados['tipografia']['font']) # aca tambien se modifica la font
             colores[box_y][box_x]="grey"
         else:
-            g.DrawRectangle(top_left=arriba_izq,bottom_right=abajo_derecha, line_color='black',fill_color="spring green")#aca se cmbia el color segun los 3 colores
+            g.DrawRectangle(top_left=arriba_izq,bottom_right=abajo_derecha, line_color='black',fill_color=color_actual)#aca se cmbia el color segun los 3 colores
             g.DrawText('{}'.format(letras[box_y][box_x]), letter_location, font=datos_configurados['tipografia']['font'])  					#la font tambien es una variable y se modifica  
-            colores[box_y][box_x]="spring green"
+            colores[box_y][box_x]=color_actual
         #NOTA: Se utiliza el color "spring green" en lugar del parámetro que recibe el color seleccionado por problemas
         #con las librerías.
-    #El evento de Corrección no funciona correctamente por problemas con "index out of range" dentro del módulo funciones_SOPA:
+    #El evento de Corrección no funciona correctamente por problemas con "index out of range" dentro del módulo funciones_SOPA:     
     if event is 'Corregir':
+        lista_de_correcciones=fs.procesar_vertical(letras,colores,'vertical',datos_configurados['colores'])
         if datos_configurados['orientacion'] =="vertical":
-            for i in datos_configurados['palabras']:
-                if fs.procesar_vertical(letras,colores,'vertical',datos_configurados['colores'])[i][0] in datos_configurados['palabras']:
-                    if fs.procesar_vertical(letras,colores,'vertical',datos_configurados['colores'])[i][1] == wp.de_pattern(i):
-                        sg.PopupOK('Acertaste la palabra' + i + ' y el tipo de palabra.')
+            for i,j in lista_de_correcciones:
+                print(lista_de_correcciones)
+                if i in datos_configurados['palabras']:
+                    if j == wp.de_pattern(i):
+                        sg.PopupOK('Acertaste la palabra ' + i + ' y el tipo de palabra.')
                     else:
-                        sg.PopupOK('Acertaste la palabra' + i + ' pero no el tipo de palabra.')
+                        sg.PopupOK('Acertaste la palabra ' + i + ' pero no el tipo de palabra.')
                 else:
-                    sg.PopupOK('No acertaste la palabra ' + i)       
+                    print(i)
+                    sg.PopupOK('No acertaste la palabra ' + i + ' ')       
         if datos_configurados['orientacion'] =="horizontal":
-            for i in datos_configurados['palabras']:
-                if fs.procesar_horizontal(letras,colores,'horizontal',datos_configurados['colores'])[i][0] in datos_configurados['palabras']:
-                    if fs.procesar_horizontal(letras,colores,'horizontal',datos_configurados['colores'])[i][1] == wp.de_pattern(i):
+            for i,j in lista_de_correcciones:
+                if i in datos_configurados['palabras']:
+                    if j == wp.de_pattern(i):
                         sg.PopupOK('Acertaste la palabra' + i + ' y el tipo de palabra.')
                     else:
                         sg.PopupOK('Acertaste la palabra' + i + ' pero no el tipo de palabra.')
