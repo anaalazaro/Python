@@ -55,7 +55,7 @@ layout = [
             [sg.Button('Corregir'), sg.Button('Exit')]
          ]
 
-window = sg.Window('Sopa de letras educativa', ).Layout(layout).Finalize()
+window = sg.Window('Sopa de letras educativa', grab_anywhere=True).Layout(layout).Finalize()
 
 g = window.FindElement('_GRAPH_')
 

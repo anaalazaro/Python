@@ -12,11 +12,9 @@ def sin_ayuda(diccionario):
             cantAdjetivos+=1
         if v['Tipo']=='Verbo':
             cantVerbos+=1
-    layout=[[sg.Text('Cantidad de palabras a encontrar: ')],
-	        [sg.T('Cantidad de adjetivos: '+ str(cantAdjetivos)) ],
-	        [sg.T('Cantidad de Verbos:  '+ str(cantVerbos))],
-	        [sg.T('Cantidad de Susutantivos: '+ str(cantSustantivos))],
-	]
+    layout=[
+	        [sg.Multiline('Cantidad de adjetivos: '+ str(cantAdjetivos)+ '\n'+'Cantidad de Verbos:  '+ str(cantVerbos)+'\n'+'Cantidad de Susutantivos: '+ str(cantSustantivos), disabled=True) ],
+	        ]
     return layout
 
 def mostrar_defi(diccionario):
@@ -25,7 +23,7 @@ def mostrar_defi(diccionario):
         defi=defi+ '\n' + j['Definición']
         
            
-    layout=[[sg.T('Definiciones de las palabras a encontrar:  '+ str(defi))],
+    layout=[[sg.Multiline('Definiciones de las palabras a encontrar:  '+ str(defi), disabled=True)],
        ]
     return layout
     
@@ -36,7 +34,7 @@ def mostrar_pal(diccionario):
        pal=pal+'\n'+i
         
            
-    layout=[[sg.T('Palabras a encontrar:  '+ str(pal))],
+    layout=[[sg.Multiline('Palabras a encontrar:  '+ str(pal),disabled=True)],
        ]
     return layout
 
@@ -46,6 +44,6 @@ def mostrar_defi_pal(diccionario):
         ayuda= ayuda + '\n'+ i +':'+j['Definición']
     print(ayuda)
     
-    layout=[[sg.T('Palabras a encontrar:  '+ str(ayuda))],
+    layout=[[sg.Multiline('Palabras a encontrar:  '+ str(ayuda), disabled=True)],
        ]
     return layout
