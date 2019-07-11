@@ -48,7 +48,7 @@ def Config():
     contenido_palabras_layout = [
 		  [sg.Input(default_text='Ingrese una palabra', key='in'), sg.Submit('Ingresar')],
 		  [sg.Listbox(values=[], size=(30, 6), key='palabra_seleccionada')],
-          [sg.Submit('Eliminar', tooltip='Seleccione una palabra y oprima el botón para eliminarla')]
+          [sg.Button('Eliminar', tooltip='Seleccione una palabra y oprima el botón para eliminarla')]
 		 ]
 
     #Layout del Frame para configurar la cantidad de palabras a hallar:
@@ -109,13 +109,11 @@ def Config():
                 if validada:
                     lista_palabras.append(values['in'])
                     contenido_palabras_layout[1][0].Update(values=lista_palabras)
-        #Al seleccionar una palabra del listbox y presionar 'Eliminar' debería borrarse pero dejó de funcionar al importar el modulo wik_y_pattern.
-
-        #if event is 'Eliminar' and values['palabra_seleccionada'] in lista_palabras:
-        #        print(lista_palabras)
-        #        lista_palabras = lista_palabras.remove(values['palabra_seleccionada'])
-        #        contenido_palabras_layout[1][0].Update(values=lista_palabras)
-        #        print(lista_palabras)
+                    
+        #Si se oprime 'Eliminar' se elimina la palabra seleccionada:
+        if event is 'Eliminar' and values['palabra_seleccionada'][0] in lista_palabras:
+            lista_palabras.remove(values['palabra_seleccionada'][0])
+            contenido_palabras_layout[1][0].Update(values=lista_palabras)
         
         #Si se oprime 'Aplicar', se efectuarán los cambios:
         if event is 'Aplicar':
