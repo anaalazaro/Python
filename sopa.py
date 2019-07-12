@@ -66,7 +66,7 @@ colores=[[j for j in range(16)]for i in range(16)]
 
 for row in range(16):
     for col in range(16):
-            g.DrawRectangle((col * BOX_SIZE + 5, row * BOX_SIZE + 3), (col * BOX_SIZE + BOX_SIZE + 5, row * BOX_SIZE + BOX_SIZE + 3), line_color='black')
+            g.DrawRectangle((col * BOX_SIZE + 5, row * BOX_SIZE + 3), (col * BOX_SIZE + BOX_SIZE + 5, row * BOX_SIZE + BOX_SIZE + 3), line_color='black',fill_color="white")
             location= (col * BOX_SIZE + 18, row * BOX_SIZE + 17)
             if datos_configurados['tipografia']['caps'] =="mayuscula":
                 letra = '{}'.format(random.choice(string.ascii_uppercase))
@@ -78,10 +78,10 @@ for row in range(16):
 
 if datos_configurados['orientacion'] =="vertical":
     for palabra in datos_configurados['palabras']:
-        columnas_validas=fs.insertar_palabra_vertical(BOX_SIZE,palabra,letras,g,columnas_validas,datos_configurados['tipografia']['font'],colores)
+        columnas_validas=fs.insertar_palabra_vertical(BOX_SIZE,palabra,letras,g,columnas_validas,datos_configurados['tipografia']['font'],colores,datos_configurados["tipografia"]["caps"])
 else:
     for palabra in datos_configurados['palabras']:
-        filas_validas=fs.insertar_palabra_horizontal(BOX_SIZE,palabra,letras,g,filas_validas,datos_configurados['tipografia']['font'],colores)
+        filas_validas=fs.insertar_palabra_horizontal(BOX_SIZE,palabra,letras,g,filas_validas,datos_configurados['tipografia']['font'],colores,datos_configurados["tipografia"]["caps"])
 		
 color_actual = 'spring green'   #valor por defecto
      
@@ -111,7 +111,7 @@ while True:             # Event Loop
         letter_location = (box_x * BOX_SIZE + 18, box_y * BOX_SIZE + 17)
         #print(box_x, box_y)
         if (colores[box_y][box_x]==color_actual):
-            g.DrawRectangle(top_left=arriba_izq,bottom_right=abajo_derecha, line_color='black', fill_color="grey")
+            g.DrawRectangle(top_left=arriba_izq,bottom_right=abajo_derecha, line_color='black', fill_color="white")
             g.DrawText('{}'.format(letras[box_y][box_x]), letter_location, font=datos_configurados['tipografia']['font']) # aca tambien se modifica la font
             colores[box_y][box_x]="grey"
         else:
@@ -125,23 +125,25 @@ while True:             # Event Loop
         lista_de_correcciones=fs.procesar_vertical(letras,colores,datos_configurados['colores'])
         if datos_configurados['orientacion'] =="vertical":
             for i,j in lista_de_correcciones:
-                print(lista_de_correcciones)
+                #print(lista_de_correcciones)
+                i=i.lower()
                 if i in datos_configurados['palabras']:
-                    if j == wp.de_pattern(i):
+                    if j == datos_configurados["diccionario"][i]["Tipo"]:
                         sg.PopupOK('Acertaste la palabra ' + i + ' y el tipo de palabra.')
                     else:
                         sg.PopupOK('Acertaste la palabra ' + i + ' pero no el tipo de palabra.')
                 else:
                     print(i)
-                    sg.PopupOK('No acertaste la palabra ' + i + ' ')       
+                    sg.PopupOK('Esta palabra no es correcta ' + i + ' ')       
         lista_de_correcciones=fs.procesar_horizontal(letras,colores,datos_configurados['colores'])
         if datos_configurados['orientacion'] =="horizontal":
             for i,j in lista_de_correcciones:
+                i=i.lower()
                 if i in datos_configurados['palabras']:
-                    if j == wp.de_pattern(i):
-                        sg.PopupOK('Acertaste la palabra' + i + ' y el tipo de palabra.')
+                    if j == datos_configurados["diccionario"][i]["Tipo"]:
+                        sg.PopupOK('Acertaste la palabra ' + i + ' y el tipo de palabra.')
                     else:
-                        sg.PopupOK('Acertaste la palabra' + i + ' pero no el tipo de palabra.')
+                        sg.PopupOK('Acertaste la palabra ' + i + ' pero no el tipo de palabra.')
                 else:
                     sg.PopupOK('Esta palabra no es correcta:  ' + i)
         break
