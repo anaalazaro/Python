@@ -122,7 +122,7 @@ while True:             # Event Loop
         #con las librerías.
     #El evento de Corrección no funciona correctamente por problemas con "index out of range" dentro del módulo funciones_SOPA:     
     if event is 'Corregir':
-        lista_de_correcciones=fs.procesar_vertical(letras,colores,'vertical',datos_configurados['colores'])
+        lista_de_correcciones=fs.procesar_vertical(letras,colores,datos_configurados['colores'])
         if datos_configurados['orientacion'] =="vertical":
             for i,j in lista_de_correcciones:
                 print(lista_de_correcciones)
@@ -134,6 +134,7 @@ while True:             # Event Loop
                 else:
                     print(i)
                     sg.PopupOK('No acertaste la palabra ' + i + ' ')       
+        lista_de_correcciones=fs.procesar_horizontal(letras,colores,datos_configurados['colores'])
         if datos_configurados['orientacion'] =="horizontal":
             for i,j in lista_de_correcciones:
                 if i in datos_configurados['palabras']:
@@ -142,6 +143,6 @@ while True:             # Event Loop
                     else:
                         sg.PopupOK('Acertaste la palabra' + i + ' pero no el tipo de palabra.')
                 else:
-                    sg.PopupOK('No acertaste la palabra ' + i)
+                    sg.PopupOK('Esta palabra no es correcta:  ' + i)
         break
 window.Close()
