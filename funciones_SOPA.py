@@ -1,12 +1,12 @@
 import random
 def insertar_palabra_horizontal (BOX_SIZE,palabra,matriz,g,filas_validas,fuente,colores):   #en filas validas se le debe mandar una lista con las filas que todavia no tienen una palabra insertada
-	pos_maxima=17-len(palabra)   
+	pos_maxima=16-len(palabra)   
 	pos=random.choice(range(0,pos_maxima))
 	fila=random.choice(filas_validas)
 	filas_validas.remove(fila)
 	for i in palabra:
 		matriz[fila][pos+1]=i #el mas uno es para evitar corrimientos
-		colores[pos+1][columna]="grey"
+		colores[fila][pos+1]="grey"
 		pos=pos+1
 		g.DrawRectangle((pos * BOX_SIZE + 5, fila * BOX_SIZE + 3), (pos * BOX_SIZE + BOX_SIZE + 5, fila * BOX_SIZE + BOX_SIZE + 3), line_color='black',fill_color="white")
 		location= (pos * BOX_SIZE + 18, fila * BOX_SIZE + 17)
@@ -15,7 +15,7 @@ def insertar_palabra_horizontal (BOX_SIZE,palabra,matriz,g,filas_validas,fuente,
 
 
 def insertar_palabra_vertical (BOX_SIZE,palabra,matriz,g,columnas_validas,fuente,colores):
-	pos_maxima=17-len(palabra)
+	pos_maxima=16-len(palabra)
 	pos=random.choice(range(0,pos_maxima))
 	columna=random.choice(columnas_validas)
 	columnas_validas.remove(columna)
@@ -29,7 +29,7 @@ def insertar_palabra_vertical (BOX_SIZE,palabra,matriz,g,columnas_validas,fuente
 	return columnas_validas
 
 
-def procesar_horizontal(matriz_letras,matriz_colores,orientacion,dic_colores):
+def procesar_horizontal(matriz_letras,matriz_colores,dic_colores):
 	lista_aux=[]
 	tipo_actual_f=" "
 	for row in range(16):
@@ -56,7 +56,7 @@ def procesar_horizontal(matriz_letras,matriz_colores,orientacion,dic_colores):
 
 
 
-def procesar_vertical(matriz_letras,matriz_colores,orientacion,dic_colores):
+def procesar_vertical(matriz_letras,matriz_colores,dic_colores):
 	lista_aux=[]
 	tipo_actual_f=" "
 	for col in range(16):
