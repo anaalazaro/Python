@@ -32,20 +32,10 @@ elif datos_configurados['ayuda']['palabras']:
 else:
     ayuda_layout=fa.mostrar_defi_pal(datos_configurados['diccionario'])
 
-#ayuda_layout_general = [sg.Frame('Ayuda', ayuda_layout, font='Any 10', title_color='cadet blue')]
-
-#if ayuda['sin_ayuda']:
-#    ayuda_layout = fa.sin_ayuda(datos_configurados['palabras'])
-#elif ayuda['con_definiciones']:
-#    ayuda_layout = fa.mostrar_defi(datos_configurados['palabras'])
-#elif ayuda['con_palabras']:
-#    ayuda_layout = fa.mostrar_pal(datos_configurados['palabras'])
-#else:
-#    ayuda_layout = [[fa.mostrar_pal(datos_configurados['palabras'])],[fa.mostrar_defi(datos_configurados['palabras'])]]
-
-#Intenté darle un valor al color del botón pero hay un problema con las librerías, por lo que lo dejé con el color por default
 botones_color_layout = [
-                  [sg.Button("Sustantivos")], [sg.Button("Adjetivos")], [sg.Button("Verbos")]
+                  [sg.Button("Sustantivos", button_color = ('black', datos_configurados["colores"]["Sustantivo"]))],
+                  [sg.Button("Adjetivos", button_color = ('black', datos_configurados["colores"]["Adjetivo"]))],
+                  [sg.Button("Verbos", button_color = ('black', datos_configurados["colores"]["Verbo"]))]
                ]
 
 layout = [

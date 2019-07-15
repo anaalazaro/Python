@@ -15,9 +15,9 @@ def Config():
     #Layout de la Tab para configurar los colores:
     colores_layout = layout =  [
         [sg.Text('Seleccione un color para cada tipo de palabra. Al finalizar presione "OK".')],
-        [sg.Text('Color para sustantivos', key='color_S'), sg.Button('.')],
-        [sg.Text('Color para adjetivos', key='color_A'), sg.Button('..')],
-        [sg.Text('Color para verbos', key='color_V'), sg.Button('...')]
+        [sg.Text('Color para sustantivos', key='color_S'), sg.Button('.', button_color = ('black','cadet blue'))],
+        [sg.Text('Color para adjetivos', key='color_A'), sg.Button('..', button_color = ('black','cadet blue'))],
+        [sg.Text('Color para verbos', key='color_V'), sg.Button('...', button_color = ('black','cadet blue'))]
 	    ]  
 
     #Layout del Frame para configurar la fuente:
@@ -97,10 +97,13 @@ def Config():
         #Los colores se pueden elegir múltiples veces, el último seleccionado es el que se guarda:
         if event is '.':
             colours['Sustantivo'] = fc.ColorChooser()
+            colores_layout[1][1].Update(button_color=('black', colours['Sustantivo']))
         if event is '..':
             colours['Adjetivo'] = fc.ColorChooser()
+            colores_layout[2][1].Update(button_color=('black', colours['Adjetivo']))
         if event is '...':
             colours['Verbo'] = fc.ColorChooser()
+            colores_layout[3][1].Update(button_color=('black', colours['Verbo']))
         #Al ingresar una palabra se verifica que no haya sido ingresada previamente:
         if event is 'Ingresar':
             if values['in'] not in lista_palabras:
@@ -109,6 +112,8 @@ def Config():
                 if validada:
                     lista_palabras.append(values['in'])
                     contenido_palabras_layout[1][0].Update(values=lista_palabras)
+                else:
+                    sg.Popup('La palabra no puede ingresarse.')
                     
         #Si se oprime 'Eliminar' se elimina la palabra seleccionada:
         if event is 'Eliminar' and values['palabra_seleccionada'][0] in lista_palabras:
