@@ -3,6 +3,24 @@ import funciones_CONFIG as fc
 import Wik_y_pattern as wp
 import funciones_AYUDA as fa
 
+def LimitePalabras(lista_palabra, cant):
+    """ Esta funcion ajusta la lista de palabras que serán impresas en la sopa de letras, dependiendo de la selección
+    del usuario."""
+    
+    i=0
+    cant=int(cant)
+    lista_palabras_nueva=[]
+    if cant < int(len(lista_palabra)):
+        limite=cant
+    else:
+        limite=int(len(lista_palabra))
+    while i < limite:
+        palabra=lista_palabra[i]
+        lista_palabras_nueva.append(palabra)
+        i=i+1
+    print(lista_palabras_nueva)
+    return lista_palabras_nueva
+
 def Config():
     ''' Esta función abre la ventana general de configuración y en cada pestaña permite configurar cada característica
 	de la sopa de letras. Al presionar "Aplicar", se guardan los cambios. Si una o más características no fueron configuradas
@@ -85,6 +103,14 @@ def Config():
     tipografia = {'font': 'Helvetica', 'caps': 'mayuscula'}
     cant_palabras = {'cant_Sust': '0', 'cant_Adjt': '0', 'cant_Verb': '0'}
     lista_palabras = []
+    lista_sustantivos = []
+    lista_sustantivos_final = []
+    lista_adjetivos = []
+    lista_adjetivos_final = []
+    lista_verbos = []
+    lista_verbos_final = []
+    lista_palabras_final = []
+    lista_palabras_eliminar = []
     diccionario_palabras = {}
     ayuda = {'sin_ayuda':True, 'definiciones':False, 'palabras':False, 'con_ayuda':False}
     datos_configurados = {'colores':colours, 'tipografia': tipografia, 'cant_palabras': cant_palabras, 'palabras': lista_palabras, 'diccionario': diccionario_palabras, 'orientacion': 'horizontal'}
@@ -114,12 +140,18 @@ def Config():
                     contenido_palabras_layout[1][0].Update(values=lista_palabras)
                 else:
                     sg.Popup('La palabra no puede ingresarse.')
-                palabra_pattern=wk.de_pattern(values["in"])
-                comparado=wk.comparando(palabra_pattern,diccionario_palabras[values["in"]])
-                if (comparado=="No coinciden"):
-                    wk.no_coinciden(values["in"],diccionario_palabras[values["in"]]["Tipo"],palabra_pattern[1])
-                elif comparado=="No se encontró la palabra":
-                    wk.no_existen(values["in"])  
+                palabra_pattern=wp.de_pattern(values["in"])
+                try:
+                    de_wik_actual=diccionario_palabras[values["in"]]        #hago este auxiliar para evitar un posible key error
+                    tipo=de_wik_actual["Tipo"]
+                    comparado=wp.comparando(palabra_pattern[1],tipo)
+                except KeyError:
+                    tipo=""
+                    comparado=wp.comparando(palabra_pattern[1],tipo)
+                if (comparado=="No Coinciden"):
+                    wp.no_coinciden(values["in"],tipo,palabra_pattern[1])
+                elif comparado=="No se encontro la palabra":
+                    wp.no_existen(values["in"])
         #Si se oprime 'Eliminar' se elimina la palabra seleccionada:
         if event is 'Eliminar' and values['palabra_seleccionada'][0] in lista_palabras:
             lista_palabras.remove(values['palabra_seleccionada'][0])
@@ -127,6 +159,21 @@ def Config():
         
         #Si se oprime 'Aplicar', se efectuarán los cambios:
         if event is 'Aplicar':
+            #Guardo la cantidad de palabras correspondiente:
+            for palabra in lista_palabras:
+                if diccionario_palabras[palabra]['Tipo'] == 'Sustantivo':
+                    lista_sustantivos.append(palabra)
+                elif diccionario_palabras[palabra]['Tipo'] == 'Adjetivo':
+                    lista_adjetivos.append(palabra)
+                else:
+                    lista_verbos.append(palabra)
+            lista_sustantivos_final = LimitePalabras(lista_sustantivos, values['cant_S'])
+            lista_adjetivos_final = LimitePalabras(lista_adjetivos, values['cant_A'])
+            lista_verbos_final = LimitePalabras(lista_verbos, values['cant_V'])
+            lista_palabras_final = lista_sustantivos_final + lista_adjetivos_final + lista_verbos_final
+            for palabra in lista_palabras_final:
+                if palabra not in lista_palabras:
+                    lista_palabras_eliminar.append(palabra)
 		    #Guardo la configuración de tipografía en el diccionario:
             tipografia['font'] = values['fuente']
             if values['minus']:
@@ -134,9 +181,9 @@ def Config():
             else:
                 tipografia['caps'] = 'mayuscula'
             #Guardo la configuración de cantidad de palabras en el diccionario:
-            cant_palabras['cant_Sust'] = values['cant_S']
-            cant_palabras['cant_Adjt'] = values['cant_A']
-            cant_palabras['cant_Verb'] = values['cant_V']
+            cant_palabras['cant_Sust'] = len(lista_sustantivos_final)
+            cant_palabras['cant_Adjt'] = len(lista_adjetivos_final)
+            cant_palabras['cant_Verb'] = len(lista_verbos_final)
             #Aquí guarda la configuración de Ayuda:
             
             ayuda = {'sin_ayuda': values['sin_ayuda'], 'definiciones': values['con_definiciones'], 'palabras': values['con_palabras'], 'con_ayuda': values['con_ayuda']}
@@ -147,8 +194,14 @@ def Config():
                 orientacion = 'vertical'
             else:
                 orientacion = 'horizontal'
+            #Elimino del diccionario las palabras que no imprimo:
+            for palabra in lista_palabras_eliminar:
+                try:
+                    diccionario_palabras.pop(palabra)
+                except KeyError:
+                    a+1   #solucion para el key error
             #Finalmente, guardo todo lo anterior en un solo diccionario y lo retorno:
-            datos_configurados = {'colores':colours, 'tipografia': tipografia, 'cant_palabras': cant_palabras, 'palabras': lista_palabras, 'diccionario': diccionario_palabras, 'orientacion': orientacion, 'ayuda': ayuda}
+            datos_configurados = {'colores':colours, 'tipografia': tipografia, 'cant_palabras': cant_palabras, 'palabras': lista_palabras_final, 'diccionario': diccionario_palabras, 'orientacion': orientacion, 'ayuda': ayuda}
             print(datos_configurados)
             break     
     window.Close()
