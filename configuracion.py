@@ -114,7 +114,12 @@ def Config():
                     contenido_palabras_layout[1][0].Update(values=lista_palabras)
                 else:
                     sg.Popup('La palabra no puede ingresarse.')
-                    
+                palabra_pattern=wk.de_pattern(values["in"])
+                comparado=wk.comparando(palabra_pattern,diccionario_palabras[values["in"]])
+                if (comparado=="No coinciden"):
+                    wk.no_coinciden(values["in"],diccionario_palabras[values["in"]]["Tipo"],palabra_pattern[1])
+                elif comparado=="No se encontró la palabra":
+                    wk.no_existen(values["in"])  
         #Si se oprime 'Eliminar' se elimina la palabra seleccionada:
         if event is 'Eliminar' and values['palabra_seleccionada'][0] in lista_palabras:
             lista_palabras.remove(values['palabra_seleccionada'][0])
