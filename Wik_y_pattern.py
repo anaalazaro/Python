@@ -1,5 +1,6 @@
 from pattern.es import parse,tag,singularize,pluralize
 from pattern.web import Wiktionary
+import json
 
 def de_pattern(teclado):
 	palabra_tipo=tag(teclado,tokenize=True, encoding="utf-8")
@@ -11,7 +12,7 @@ def de_pattern(teclado):
 	elif palabra_tipo[0][1]=="JJ":
 		palabra_tipo=[teclado,"Adjetivo"]
 	else:
-		palabra_tipo=[teclado,"error"] #preguntar por esto	
+		palabra_tipo=["",""] #preguntar por esto	
 		#print(palabra_tipo)
 	return palabra_tipo
 
@@ -43,6 +44,7 @@ def validacion(teclado, diccionario):
 					tipo_real = list(filter(lambda x: x.title==tipo, s[0].children))
 					if tipo_real:
 						clasificacion=tipo
+						break
 				if clasificacion in lista_adjetivos: 
 					clasificacion="Adjetivo"
 				elif clasificacion in lista_sustantivos:
@@ -71,15 +73,31 @@ def validacion(teclado, diccionario):
 #print(diccionario)
 
 def comparando(pattern,wik):
-	if pattern[1]!=wik[1]:
-		#reporte 1 pattern y wik no coinciden
-		aux= "No Coinciden"
-		return aux
+	if pattern[1]!=wik["Tipo"]:
+		aux="No Coinciden"
+	elif (pattern[1]=="" and wik["Tipo"]==""):
+		aux="No se encontró la palabra"
+	else:
+		aux="Las definiciones coinciden"	
+	return aux
 
 
+def no_coinciden(palabra,c_de_wik,c_de_pattern):
+	""" Esta función ingresa las palabras cuyas definiciones no coinicden a un reporte """
+	datos={
+		"Palabra ":palabra,
+		"Clasificacion de Wiktionary ":c_de_wik,
+		"Clasificacion de Pattern ":c_de_pattern
+	}
+	archivo = open("Reporte_No_Coinciden.txt", "w")
+	json.dump(datos, archivo)
+	archivo.close()
 
-#
-#   para la implementacion hay que llamar a las funciones
-#	de pattern y validacion, despues comparar con comparando
-#	y finalmente realizar los reportes que faltan
-#
+def no_existen(palabra):
+	""" Esta función ingresa las palabras cuyas definiciones no existen a un reporte """
+	datos={
+		"Palabra ":palabra
+	}
+	archivo = open("Reporte_No_Existen.txt", "w")
+	json.dump(datos, archivo)
+	archivo.close()
