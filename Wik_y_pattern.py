@@ -28,11 +28,11 @@ def validacion(teclado, diccionario):
 		etimologia = list(filter(lambda x: x.title=="Etimología", s[0].children))
 		if etimologia ==[]:
 			teclado=singularize(teclado)
+			cambio=True 						#booleano que indica si la palabra cambió de plural a singular
 			validado=False
 			articulo = web.search(teclado)
 		if articulo is not None:
 			try:
-				cambio=True 						#booleano que indica si la palabra cambió de plural a singular
 				s = list(filter(lambda x: x.title=="Español", articulo.sections))  
 				etimologia = list(filter(lambda x: x.title=="Etimología", s[0].children))
 				definicion=etimologia[0].content #DEFINICION  
@@ -61,7 +61,7 @@ def validacion(teclado, diccionario):
 		definicion="" # lo declaro para evitar un error posterior de referenciar una variable antes de que tenga un valor
 		clasificacion=""	
 	if cambio:
-		pluralize(teclado)
+		teclado=pluralize(teclado)
 								 
 	indice=teclado
 	diccionario[indice]={"Definición":definicion,"Tipo":clasificacion}#diccionario con la palabra , su deficinicion y su tipo.
@@ -73,10 +73,10 @@ def validacion(teclado, diccionario):
 #print(diccionario)
 
 def comparando(pattern,wik):
-	if pattern[1]!=wik["Tipo"]:
+	if pattern!=wik:
 		aux="No Coinciden"
-	elif (pattern[1]=="" and wik["Tipo"]==""):
-		aux="No se encontró la palabra"
+	elif (pattern=="" and wik==""):
+		aux="No se encontro la palabra"
 	else:
 		aux="Las definiciones coinciden"	
 	return aux
@@ -84,12 +84,11 @@ def comparando(pattern,wik):
 
 def no_coinciden(palabra,c_de_wik,c_de_pattern):
 	""" Esta función ingresa las palabras cuyas definiciones no coinicden a un reporte """
-	datos={
-		"Palabra ":palabra,
+	datos=[
+		{"Palabra ":palabra,
 		"Clasificacion de Wiktionary ":c_de_wik,
-		"Clasificacion de Pattern ":c_de_pattern
-	}
-	archivo = open("Reporte_No_Coinciden.txt", "w")
+		"Clasificacion de Pattern ":c_de_pattern}]
+	archivo = open("Reporte_No_Coinciden.txt", "a")
 	json.dump(datos, archivo)
 	archivo.close()
 
@@ -98,6 +97,6 @@ def no_existen(palabra):
 	datos={
 		"Palabra ":palabra
 	}
-	archivo = open("Reporte_No_Existen.txt", "w")
+	archivo = open("Reporte_No_Existen.txt", "a")
 	json.dump(datos, archivo)
 	archivo.close()
