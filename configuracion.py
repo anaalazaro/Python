@@ -3,6 +3,17 @@ import funciones_CONFIG as fc
 import Wik_y_pattern as wp
 import funciones_AYUDA as fa
 
+def calcular_promedio(archivo,oficina):
+	temp=0
+	archivo = open("datos-oficinas.JSON", "r")
+	datos = json.load(archivo)
+	lista=datos[oficina]
+	for i in lista:
+		temp+=i["Temperatura"]
+	promedio=temp/len(lista)	
+	return promedio
+
+
 
 def LimitePalabras(lista_palabra, cant):
     """ Esta funcion ajusta la lista de palabras que serán impresas en la sopa de letras, dependiendo de la selección
