@@ -10,7 +10,8 @@ def calcular_promedio(archivo,oficina):
 	lista=datos[oficina]
 	for i in lista:
 		temp+=i["Temperatura"]
-	promedio=temp/len(lista)	
+	promedio=temp/len(lista)
+	archivo.close()	
 	return promedio
 
 
