@@ -42,6 +42,7 @@ def Config():
     #Lista de fuentes disponibles para el programa:
     lista_fuentes = ["Arial", "Helvetica", "Times New Roman", "Courier", "Verdana", "Georgia",
     "Garamond", "Bookman", "Comic Sans MS", "Trebuchet MS", "Arial Black", "Impact"]
+    lista_oficinas = ["Oficina 1", "Oficina 2", "Oficina 3"] #Luego se recibirán como parámetro desde el archivo json
 
     #Layout de la Tab para configurar los colores:
     colores_layout = layout =  [
@@ -102,10 +103,21 @@ def Config():
           [sg.Frame('Cantidad', contenido_cantidad_palabras_layout, font='Any 8', title_color='cadet blue')],
           [sg.Frame('Orientación', contenido_orientacion_layout, font='Any 8', title_color='cadet blue')]      
          ]
-
+         
+    #Layout del Frame para seleccionar la oficina de la cual se utilizarán los datos para configurar el
+    #estilo "Look and Feel"
+    seleccion_oficinas_layout =   [
+          [sg.Combo(lista_oficinas, default_value='Helvetica', key='oficina')]
+    ]
+    
+    #Layout de la Tab que contendrá la herramienta de selección de oficinas"     
+    oficinas_layout =   [
+          [sg.Frame('Oficinas', seleccion_oficinas_layout, font='Any 8', title_color='cadet blue')]
+         ]
+         
     #Layout de la ventana de configuración:
     layout = [[sg.TabGroup([[sg.Tab('Colores', colores_layout), sg.Tab('Tipografía', tipografia_layout), 
-           sg.Tab('Ayuda', ayuda_layout), sg.Tab('Contenido', contenido_layout)]])],
+           sg.Tab('Ayuda', ayuda_layout), sg.Tab('Contenido', contenido_layout), sg.Tab('Oficinas', oficinas_layout)]])],
            [sg.Submit('Aplicar', tooltip='Al presionar este botón todos los cambios serán guardados')]
           ]    
 
