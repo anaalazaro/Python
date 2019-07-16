@@ -23,6 +23,8 @@ columnas_validas = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
 BOX_SIZE = 25
 
+a=0     #auxiliar para levantar excepciones
+
 if datos_configurados['ayuda']['sin_ayuda']:
     ayuda_layout=fa.sin_ayuda(datos_configurados['diccionario'])
 elif datos_configurados['ayuda']['definiciones']:
@@ -94,23 +96,25 @@ while True:             # Event Loop
     if event == '_GRAPH_':
         if mouse == (None, None):
             continue
-        box_x = mouse[0]//BOX_SIZE
-        box_y = mouse[1]//BOX_SIZE
-        arriba_izq = (box_x * BOX_SIZE +5, box_y * BOX_SIZE +3 )
-        abajo_derecha=(box_x * BOX_SIZE +30, box_y * BOX_SIZE +28)
-        letter_location = (box_x * BOX_SIZE + 18, box_y * BOX_SIZE + 17)
-        #print(box_x, box_y)
-        if (colores[box_y][box_x]==color_actual):
-            g.DrawRectangle(top_left=arriba_izq,bottom_right=abajo_derecha, line_color='black', fill_color="white")
-            g.DrawText('{}'.format(letras[box_y][box_x]), letter_location, font=datos_configurados['tipografia']['font']) # aca tambien se modifica la font
-            colores[box_y][box_x]="grey"
-        else:
-            g.DrawRectangle(top_left=arriba_izq,bottom_right=abajo_derecha, line_color='black',fill_color=color_actual)#aca se cmbia el color segun los 3 colores
-            g.DrawText('{}'.format(letras[box_y][box_x]), letter_location, font=datos_configurados['tipografia']['font'])  					#la font tambien es una variable y se modifica  
-            colores[box_y][box_x]=color_actual
-        #NOTA: Se utiliza el color "spring green" en lugar del parámetro que recibe el color seleccionado por problemas
-        #con las librerías.
-    #El evento de Corrección no funciona correctamente por problemas con "index out of range" dentro del módulo funciones_SOPA:     
+        try:
+            box_x = mouse[0]//BOX_SIZE
+            box_y = mouse[1]//BOX_SIZE
+            arriba_izq = (box_x * BOX_SIZE +5, box_y * BOX_SIZE +3 )
+            abajo_derecha=(box_x * BOX_SIZE +30, box_y * BOX_SIZE +28)
+            letter_location = (box_x * BOX_SIZE + 18, box_y * BOX_SIZE + 17)
+            if (colores[box_y][box_x]==color_actual):
+                g.DrawRectangle(top_left=arriba_izq,bottom_right=abajo_derecha, line_color='black', fill_color="white")
+                g.DrawText('{}'.format(letras[box_y][box_x]), letter_location, font=datos_configurados['tipografia']['font']) # aca tambien se modifica la font
+                colores[box_y][box_x]="grey"
+            else:
+                g.DrawRectangle(top_left=arriba_izq,bottom_right=abajo_derecha, line_color='black',fill_color=color_actual)#aca se cmbia el color segun los 3 colores
+                g.DrawText('{}'.format(letras[box_y][box_x]), letter_location, font=datos_configurados['tipografia']['font'])  					#la font tambien es una variable y se modifica  
+                colores[box_y][box_x]=color_actual
+			#NOTA: Se utiliza el color "spring green" en lugar del parámetro que recibe el color seleccionado por problemas
+			#con las librerías.
+		#El evento de Corrección no funciona correctamente por problemas con "index out of range" dentro del módulo funciones_SOPA:     
+        except IndexError:
+            a+1    #otra vez esto es usado para evitar el index error
     if event is 'Corregir':
         lista_de_correcciones=fs.procesar_vertical(letras,colores,datos_configurados['colores'])
         if datos_configurados['orientacion'] =="vertical":
