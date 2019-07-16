@@ -82,12 +82,14 @@ def comparando(pattern,wik):
 	return aux
 
 
-def no_coinciden(palabra,c_de_wik,c_de_pattern):
+def no_coinciden(palabra,c_de_wik,c_de_pattern,i):
 	""" Esta función ingresa las palabras cuyas definiciones no coinicden a un reporte """
-	datos=[
-		{"Palabra ":palabra,
+	datos={
+	
+		"Reporte"+str(i):[{"Palabra ":palabra,
 		"Clasificacion de Wiktionary ":c_de_wik,
 		"Clasificacion de Pattern ":c_de_pattern}]
+		}
 	archivo = open("Reporte_No_Coinciden.txt", "a")
 	json.dump(datos, archivo)
 	archivo.close()
@@ -95,7 +97,7 @@ def no_coinciden(palabra,c_de_wik,c_de_pattern):
 def no_existen(palabra):
 	""" Esta función ingresa las palabras cuyas definiciones no existen a un reporte """
 	datos={
-		"Palabra ":palabra
+		"Palabra "+str(i):palabra
 	}
 	archivo = open("Reporte_No_Existen.txt", "a")
 	json.dump(datos, archivo)

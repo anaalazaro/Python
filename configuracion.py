@@ -3,6 +3,7 @@ import funciones_CONFIG as fc
 import Wik_y_pattern as wp
 import funciones_AYUDA as fa
 
+
 def LimitePalabras(lista_palabra, cant):
     """ Esta funcion ajusta la lista de palabras que serán impresas en la sopa de letras, dependiendo de la selección
     del usuario."""
@@ -112,6 +113,7 @@ def Config():
     lista_palabras_final = []
     lista_palabras_eliminar = []
     diccionario_palabras = {}
+    nro_reporte=0
     ayuda = {'sin_ayuda':True, 'definiciones':False, 'palabras':False, 'con_ayuda':False}
     datos_configurados = {'colores':colours, 'tipografia': tipografia, 'cant_palabras': cant_palabras, 'palabras': lista_palabras, 'diccionario': diccionario_palabras, 'orientacion': 'horizontal'}
 
@@ -149,9 +151,11 @@ def Config():
                     tipo=""
                     comparado=wp.comparando(palabra_pattern[1],tipo)
                 if (comparado=="No Coinciden"):
-                    wp.no_coinciden(values["in"],tipo,palabra_pattern[1])
+                    wp.no_coinciden(values["in"],tipo,palabra_pattern[1],nro_reporte)
+                    nro_reporte=nro_reporte+1
                 elif comparado=="No se encontro la palabra":
-                    wp.no_existen(values["in"])
+                    wp.no_existen(values["in"],nro_reporte)
+                    nro_reporte=nro_reporte+1
         #Si se oprime 'Eliminar' se elimina la palabra seleccionada:
         if event is 'Eliminar' and values['palabra_seleccionada'][0] in lista_palabras:
             lista_palabras.remove(values['palabra_seleccionada'][0])
